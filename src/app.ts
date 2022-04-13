@@ -7,4 +7,4 @@ const { appPort } = getConfig();
 const app = express();
 app.use(routes);
 
-app.listen(3030, () => console.log(`Server running at port ${appPort}`));
+app.listen(3030, () => console.log(`Server running at port http://localhost:${appPort}`));

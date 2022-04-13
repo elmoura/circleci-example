@@ -11,7 +11,7 @@
     "build": "tsc",
     "start": "node dist/app.js",
     "test": "jest",
-    "test:cov": "jest --coverage"
+    "test:cov": "jest --coverage --verbose"
   },
   "dependencies": {
     "dotenv": "^16.0.0",

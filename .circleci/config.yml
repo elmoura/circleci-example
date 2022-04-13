@@ -1,0 +1,57 @@
+version: 2.1
+
+aliases:
+  - &main_only
+    filters:
+      branches:
+        only: main
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/node:16.0.0
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Install Dependencies
+          command: yarn install --immutable
+
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - .yarn/cache
+            - .yarn/unplugged
+
+      - run:
+          name: Build TypeScript
+          command: yarn build
+
+      - run:
+          name: Run tests
+          command: yarn test:cov
+
+  fake-deploy:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run:
+          name: Fake Deploy Step
+          command: echo 'salve salve familia'
+
+workflows:
+  validate-pull-request:
+    jobs:
+      - build-and-test
+
+  deploy:
+    jobs:
+      - build-and-test:
+          <<: *main_only
+      - fake-deploy:
+          <<: *main_only

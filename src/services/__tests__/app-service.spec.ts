@@ -4,6 +4,7 @@ const appService = new AppService()
 
 describe('AppService tests', () => {
   test('should return a hello world message', () => {
-    expect(appService.helloMessage()).toBeTruthy();
+    const { message } = appService.helloMessage()
+    expect(message).toBeTruthy()
   })
 })
